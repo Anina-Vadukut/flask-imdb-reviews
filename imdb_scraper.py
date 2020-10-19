@@ -18,6 +18,7 @@ def get_rating(text):
     reviewlink = movielink + 'reviews'
     linkpage = requests.get(reviewlink)
     soup3 = BeautifulSoup(linkpage.content, 'html.parser')
+    
     return soup3, movierating
 
 def get_soup(url):
@@ -50,7 +51,7 @@ def get_movie_title(review_url):
 def get_reviews(soup):
     '''Function returns reviews url for the movie.'''    
 
-    d={}
+    review_dict={}
     # get a list of user ratings
 
     for i in soup.find_all('div', attrs={'class':'review-container'}):
@@ -60,7 +61,7 @@ def get_reviews(soup):
             a = i.find('a', attrs={'class':'title'})
             b = "https://www.imdb.com" + a['href']
             if i.find('span', attrs={'class': 'point-scale'}):
-                tp = next(tag.previous_element.previous_element for tag in i.find('span', attrs={'class': 'point-scale'}))
-                d[b]=tp
+                review_dict[b] = next(tag.previous_element.previous_element for tag in i.find('span', attrs={'class': 'point-scale'}))
+                
 
-    return d
+    return review_dict
