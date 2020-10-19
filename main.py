@@ -53,17 +53,14 @@ def upload():
             results = pool.map(get_review_text, a)
             pool.close()
             pool.join()
-            
-         
+                   
             movie_rev = dict(zip(results, rate))
             print(results)
             # construct a dataframe
             df = pd.DataFrame(movie_rev.items(), columns=['user_review', 'user_rating'])
             df['user_rating'] = df['user_rating'].astype(int)
-            neg_lis = []
-            good_lis = []
-            pos_correct=0
-            neg_correct=0
+            neg_lis, good_lis = [], []
+            pos_correct, neg_correct = 0, 0
             print(df)
             for doc in zip(df['user_review'], df['user_rating']):
                 if doc[1] > 6:
